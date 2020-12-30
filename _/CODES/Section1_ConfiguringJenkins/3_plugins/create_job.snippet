@@ -1,0 +1,27 @@
+import jenkins.model.Jenkins;
+import hudson.model.FreeStyleProject;
+import hudson.tasks.Shell;
+
+job1 = Jenkins.instance.createProject(FreeStyleProject, 'job1')
+
+// fake a 100 MB workspace
+job1.buildersList.add(new Shell('dd if=/dev/zero of=bigfile bs=1024 count=51200'))
+
+job1.save()
+
+build1 = job1.scheduleBuild2(5, new hudson.model.Cause.UserIdCause())
+
+// Block until the build finishes
+build1.get()
+
+job2 = Jenkins.instance.createProject(FreeStyleProject, 'job2')
+
+// fake a 100 MB workspace
+job2.buildersList.add(new Shell('dd if=/dev/zero of=bigfile bs=1024 count=102400'))
+
+job2.save()
+
+build2 = job2.scheduleBuild2(5, new hudson.model.Cause.UserIdCause())
+
+// Block until the build finishes
+build2.get()

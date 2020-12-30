@@ -1,0 +1,15 @@
+version: '2.1'
+services:
+  jenkins:
+    container_name: jenkins_server
+    image: jenkins/server
+    build: .
+    ports:
+      - "${JENKINS_SERVER_PORT}:8080"
+    volumes:
+      - ${JENKINS_DATA_DIR}/home:/var/jenkins_home
+    environment:
+      - JENKINS_ADMIN_USER
+      - JENKINS_ADMIN_PASS
+      - JENKINS_ADMIN_ADDR
+      - JENKINS_SERVER_PORT
